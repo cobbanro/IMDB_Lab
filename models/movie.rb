@@ -18,9 +18,9 @@ class Movie
       title,
       genre
     )
-      VALUES
+    VALUES
     (
-        $1, $2
+      $1, $2
     )
     RETURNING id"
     values = [@title, @genre]
@@ -28,4 +28,15 @@ class Movie
     @id = movie['id'].to_i
   end
 
+  def self.all()
+    sql = "SELECT * FROM movies"
+    movies = SqlRunner.run(sql)
+    movie_hash = movies.map { |movie| Movie.new(movie)  }
+    return movie_hash
+  end
+
+  def self.delete_all()
+  sql = "DELETE FROM movies"
+  SqlRunner.run(sql)
+  end
 end
